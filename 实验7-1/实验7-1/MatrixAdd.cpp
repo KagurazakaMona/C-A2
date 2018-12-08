@@ -1,4 +1,4 @@
-#include "MatrixAdd.h"
+ï»¿#include "MatrixAdd.h"
 
 MatrixAdd::MatrixAdd(int x[M][N]) {
 	for (int i = 0; i < M; i++) {
@@ -12,7 +12,7 @@ MatrixAdd MatrixAdd::operator+(MatrixAdd &b){
 	MatrixAdd temp = b;
 	for (int i = 0; i < M; i++) {
 		for (int j = 0; j < N; j++) {
-			temp.a[i][j] = b.a[i][j] + a[i][j];//ÕâÀïbÊÇÐÎ²Î£¬¿ÉÒÔËæÒâÐÞ¸Ä£¬²»»áÓ°ÏìÔ­ÊýÖµ¡£
+			temp.a[i][j] = b.a[i][j] + a[i][j];
 		}
 	}
 	return temp;
