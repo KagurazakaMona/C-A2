@@ -8,6 +8,7 @@ protected:
 	void Menu();
 	void StudentSignUp();
 	void ListStudents();
+	void DeleteStudent();
 public:
 	admin() {};
 	admin(string inputname, string inputusername, string inputpassword) :user(inputname, inputusername,inputpassword) {}
@@ -18,6 +19,7 @@ private:
 	void Menu();
 	void AdminSignUp();
 	void ListAdmins();
+	void DeleteAdmin();
 public:
 	superadmin();
 	superadmin(string inputusername, string inputpassword) :admin(inputusername, inputusername, inputpassword) {}
