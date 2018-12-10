@@ -9,15 +9,17 @@ class student:public user {
 private:
 	string sex;
 	int borrownumber;
-	vector<book> borrowbooks;
+	vector<string> borrowbooksisbn;
 	void Menu();
 	void SignUp();
 public:
 	student();
 	student(string inputusername, string inputpassword, string na, string se) :user(na, inputusername, inputpassword), sex(se) {
 		borrownumber = 0;
-		vector<book> borrowbooks(10);
+		vector<string> borrowbooksisbn(10);
 	}
+	void ShowInformation();
 	string GetSex();
 	int GetBorroenumber();
+	vector<string> GetBorrowbooksisbn();
 };

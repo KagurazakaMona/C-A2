@@ -1,6 +1,7 @@
-﻿#include "library.h"
-#include <iostream>
-#include <string>
+﻿#include"library.h"
+#include<iostream>
+#include<fstream>
+#include<string>
 #include<Windows.h>
 #include<stdio.h>
 #include<stdlib.h>
@@ -65,7 +66,39 @@ void library::Menu() {
 		default:
 			break;
 		}
+		WriteFile();
 	}
+}
+
+/*/////////////////////////////////////////////////////////////////////////////
+
+.			函数	名称：library::WriteFile()
+.					作用：写入文件。
+.					输入值：None
+.					类型：void
+.					返回值：None
+
+*//////////////////////////////////////////////////////////////////////////////
+void library::WriteFile() {
+	ofstream outfile;
+	outfile.open("MonaLibrary.csv", ios::out | ios::trunc);
+	for (auto i : booklist) {
+		/*outfile << "book,";
+		outfile << i.GetIsbn() <<','<< i.GetName() << ',' << i.GetLocation() << ',' << i.GetNowquantity() << ',' << i.GetTotalquantity() << endl;*/
+	}
+	for (auto i : adminlist) {
+		outfile << "admin,";
+		outfile << i.GetName() << ',' << i.GetUsername() << ',' << i.GetPassword() << endl;
+	}
+	for (auto i : studentlist) {
+		outfile << "student,";
+		outfile << i.GetName() << ',' << i.GetUsername() << ',' << i.GetSex() << ',' << i.GetBorroenumber() << ',';
+		for (auto j : i.GetBorrowbooksisbn()) {
+			outfile << j << ',';
+		}
+		outfile << endl;
+	}
+	outfile.close();
 }
 
 /*/////////////////////////////////////////////////////////////////////////////

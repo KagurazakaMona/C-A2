@@ -108,7 +108,8 @@ void admin::ListStudents() {
 		SetConsoleTextAttribute(hOut,
 			BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);//文字色_黑色，背景白色
 		for (auto i : library::studentlist) {
-			cout << setw(5) << num++ << setw(20) << i.GetUsername() << setw(20) << i.GetName() << setw(10) << i.GetSex() << setw(20) << i.GetBorroenumber() << endl;
+			cout << setw(5) << num++;
+			i.ShowInformation();
 		}
 	}
 	else {

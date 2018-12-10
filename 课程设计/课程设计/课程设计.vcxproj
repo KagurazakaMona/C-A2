@@ -123,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="admin.cpp" />
+    <ClCompile Include="book.cpp" />
     <ClCompile Include="library.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="student.cpp" />
