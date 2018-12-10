@@ -4,10 +4,21 @@
 using namespace std;
 
 class admin:public user {
+protected:
+	void Menu();
+	void StudentSignUp();
+	void ListStudents();
 public:
-	admin();
-	admin(string inputusername, string inputpassword) :user(inputusername,inputpassword) {}
-	void SignUp();
+	admin() {};
+	admin(string inputname, string inputusername, string inputpassword) :user(inputname, inputusername,inputpassword) {}
 };
 
-class superadmin:public admin { };
+class superadmin:public admin { 
+private:
+	void Menu();
+	void AdminSignUp();
+	void ListAdmins();
+public:
+	superadmin();
+	superadmin(string inputusername, string inputpassword) :admin(inputusername, inputusername, inputpassword) {}
+};

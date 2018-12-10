@@ -1,16 +1,18 @@
 ﻿#pragma once
-#include <string>
+#include<string>
 using namespace std;
 
 class user {
 protected:
 	string username;
 	string password;
+	string name;
 	virtual void Menu() = 0;
 public:
-	user();
-	user(string inputusername, string inputpassword) :username(inputusername), password(inputpassword) {}
+	user() {}
+	user(string inputname, string inputusername, string inputpassword) :name(inputname), username(inputusername), password(inputpassword) {}
 	void login(string getpassword);
 	string GetUsername();
-	void SignUp();
+	string GetPassword();
+	string GetName();
 };

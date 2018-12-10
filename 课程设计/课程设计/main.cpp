@@ -1,10 +1,17 @@
-﻿#include"library.h"
-#include<iostream>
-using namespace std;
+﻿#include "library.h"
+vector<admin> library::adminlist;
+vector<student> library::studentlist;
 
-library titlibrary;
+/*/////////////////////////////////////////////////////////////////////////////
 
+.			函数	名称：主函数main()
+.					作用：程序入口。
+.					输入值：五
+.					类型：int
+.					返回值：正确运行为“0”。
+
+*//////////////////////////////////////////////////////////////////////////////
 int main() {
-	titlibrary.mainmenu();
+	new library;
 	return 0;
 }

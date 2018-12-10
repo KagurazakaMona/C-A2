@@ -9,8 +9,21 @@ void user::login(string getpassword) {
 		Sleep(1000);
 		Menu();
 	}
+	else {
+		cout << "用户名或密码错误！" << endl;
+		cout << "登录失败！" << endl;
+		Sleep(3000);
+	}
 }
 
 string user::GetUsername() {
 	return username;
+}
+
+string user::GetPassword() {
+	return password;
+}
+
+string user::GetName() {
+	return name;
 }

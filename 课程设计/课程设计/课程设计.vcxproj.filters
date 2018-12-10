@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="library.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="book.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -28,6 +25,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="user.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,10 +41,10 @@
     <ClCompile Include="library.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="student.cpp">
+    <ClCompile Include="user.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="user.cpp">
+    <ClCompile Include="student.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

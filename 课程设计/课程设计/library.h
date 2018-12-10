@@ -1,20 +1,25 @@
 ﻿#pragma once
 #include<vector>
+#include<string>
 #include"admin.h"
 #include"book.h"
 #include"student.h"
-//#include<string>
-//using namespace std;
+using namespace std;
 
 class library {
 private:
 	superadmin root;
-	vector<admin> admins;
-	vector<student> students;
-	vector<book> books;
+	static vector<admin> adminlist;
+	static vector<student> studentlist;
+	static vector<book> booklist;
 	void AdminLogin();
 	void StudentLogin();
+	void Menu();
 public:
+	friend class superadmin;
+	friend class student;
+	friend class admin;
 	library();
-	void mainmenu();
+	static void AdminSignUp(string newname, string newusername, string newpassword);
+	static void StudentSignUp(string newusername, string newpassword,string name,string se);
 };
