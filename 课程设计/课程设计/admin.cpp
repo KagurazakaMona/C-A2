@@ -18,36 +18,39 @@ using namespace std;
 
 *//////////////////////////////////////////////////////////////////////////////
 void admin::Menu() {
-	HANDLE hOut;
-	hOut = GetStdHandle(STD_OUTPUT_HANDLE);//  获取输出流的句柄
-	SetConsoleTextAttribute(hOut,
-		FOREGROUND_RED |        // 文字色_红色
-		BACKGROUND_BLUE | BACKGROUND_GREEN/* | BACKGROUND_RED*/);      // 背景色_蓝绿色
-	cout << "                                        " << endl;
-	cout << "**********   图书馆管理系统   **********" << endl;
-	cout << "***            管理员面板            ***" << endl;
-	SetConsoleTextAttribute(hOut,
-		BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);//文字色_黑色，背景白色
-	cout << "菜单：" << endl;
-	cout << "1.注册学生账号" << endl;
-	cout << "2.柜台还书" << endl;
-	cout << "3.图书检索" << endl;
-	cout << "4.列出学生列表" << endl;
-	cout << "5.删除学生账号" << endl;
-	cout << "0.退出" << endl;
-	cout << "请输入选择序号：";
-	int choose;
-	cin >> choose;
-	switch (choose) {
-	case(1):StudentSignUp(); break;
-	case(2):; break;
-	case(3):; break;
-	case(4):ListStudents(); break;
-	case(5):DeleteStudent(); break;
-	//case(6):ListAdmins(); break;
-	case(0):goto exit; break;
-	default:
-		break;
+	while (1) {
+		HANDLE hOut;
+		hOut = GetStdHandle(STD_OUTPUT_HANDLE);//  获取输出流的句柄
+		SetConsoleTextAttribute(hOut,
+			FOREGROUND_RED |        // 文字色_红色
+			BACKGROUND_BLUE | BACKGROUND_GREEN/* | BACKGROUND_RED*/);      // 背景色_蓝绿色
+		cout << "**********   图书馆管理系统   **********" << endl;
+		cout << "***            管理员面板            ***" << endl;
+		cout << "                                        " << endl;
+		SetConsoleTextAttribute(hOut,
+			BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);//文字色_黑色，背景白色
+		cout << "菜单：" << endl;
+		cout << "1.注册学生账号" << endl;
+		cout << "2.柜台还书" << endl;
+		cout << "3.图书检索" << endl;
+		cout << "4.列出学生列表" << endl;
+		cout << "5.删除学生账号" << endl;
+		cout << "6.添加新书籍" << endl;
+		cout << "0.退出" << endl;
+		cout << "请输入选择序号：";
+		int choose;
+		cin >> choose;
+		switch (choose) {
+		case(1):StudentSignUp(); library::WriteFile(); break;
+		case(2):ReturnBook(); library::WriteFile(); break;
+		case(3):ListBook(); break;
+		case(4):ListStudents(); break;
+		case(5):DeleteStudent(); library::WriteFile(); break;
+		case(6):BookSignUp(); library::WriteFile(); break;
+		case(0):goto exit; break;
+		default:
+			break;
+		}
 	}
 exit:;
 }
@@ -66,25 +69,39 @@ void admin::StudentSignUp() {
 		string temp1, temp2;
 		string number;
 		string name;
-		string sex;
 		cout << "请输入新注册的学生姓名：";
 		cin >> name;
 		cout << "请输入新注册的学生学号：";
 		cin >> number;
-		cout << "请输入新注册的性别：";
-		cin >> sex;
 		cout << "请输入新注册学生的密码：";
 		cin >> temp1;
 		cout << "请再次输入新注册学生的密码：";
 		cin >> temp2;
 		if (temp1 == temp2) {
-			library::StudentSignUp(number, temp2, name, sex);
+			library::StudentSignUp(number, temp2, name);
 			break;
 		}
 		else {
 			cout << "两次输入的密码不同，请重试！" << endl;
 		}
 	}
+}
+
+void admin::BookSignUp() {
+	string location;
+	int quantity;
+	string isbn;
+	string name;
+	cout << "请输入新书名：";
+	cin >> name;
+	cout << "请输入新书ISBN：";
+	cin >> isbn;
+	cout << "请输入新书位置：";
+	cin >> location;
+	cout << "请输入新书数量：";
+	cin >> quantity;
+	library::BookSignUp(isbn, name, location, quantity);
+	cout << "录入完成！" << endl;
 }
 
 /*/////////////////////////////////////////////////////////////////////////////
@@ -104,7 +121,8 @@ void admin::ListStudents() {
 		BACKGROUND_BLUE | BACKGROUND_GREEN/* | BACKGROUND_RED*/);      // 背景色_蓝绿色
 	int num = 1;
 	if (!library::studentlist.empty()) {
-		cout << setw(5) << "序号" << setw(20) << "学号（登录名）" << setw(20) << "姓名" << setw(10) << "性别" << setw(20) << "现借书数量" << endl;;
+		cout << setw(5) << "序号" << setw(20) << "学号（登录名）" << setw(20) << "姓名" << setw(15) << "现借书数量" <<
+			setw(20) << "借书1.ISBN" << setw(20) << "借书2.ISBN" << setw(20) << "借书3.ISBN" << endl;
 		SetConsoleTextAttribute(hOut,
 			BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);//文字色_黑色，背景白色
 		for (auto i : library::studentlist) {
@@ -113,10 +131,11 @@ void admin::ListStudents() {
 		}
 	}
 	else {
-		cout << "没有管理员！" << endl;
+		cout << "没有学生！" << endl;
 		SetConsoleTextAttribute(hOut,
 			BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);//文字色_黑色，背景白色
 	}
+	system("pause");
 }
 
 /*/////////////////////////////////////////////////////////////////////////////
@@ -135,15 +154,57 @@ void admin::DeleteStudent() {
 	cin >> getusername;
 	int i = 0;
 	if (!library::studentlist.empty()) {
+		bool havestudent = 0;
 		for (auto users : library::studentlist) {
 			if (getusername == users.GetUsername()) {
 				library::studentlist.erase(library::studentlist.begin() + i);
+				havestudent = 1;
 			}
 			i++;
+		}
+		if (!havestudent) {
+			cout << "未查询到该学生，即将返回主菜单！" << endl;
 		}
 	}
 	else {
 		cout << "学生列表为空！" << endl;
+	}
+}
+
+void admin::ReturnBook() {
+	string studentnum;
+	cout << "请输入学生学号：";
+	cin >> studentnum;
+	for (auto &students : library::studentlist) {
+		if (students.GetUsername() == studentnum) {
+			cout << students.name << "学生账号目前的信息如下：" << endl;
+			students.ShowMyInformation();
+			if (students.borrownumber) {
+				cout << "请输入你要还书的ISBN：";
+				string returnisbn;
+				cin >> returnisbn;
+				for (auto &i : students.borrowbooksisbn) {
+					if (i == returnisbn) {
+						for (auto &j : library::booklist) {
+							if (j.GetIsbn() == returnisbn) {
+								j.nowquantity++;
+							}
+						}
+						i = "EMPTY";
+						students.borrownumber--;
+						cout << "还书成功！3秒后返回主菜单......" << endl;
+						Sleep(3000);
+					}
+					else {
+						cout << "该同学尚未借阅改书，请检查。" << endl;
+					}
+				}
+			}
+			else {
+				cout << "该同学的账号无借书记录，请加强阅读哦喵~~~" << endl;
+			}
+			break;
+		}
 	}
 }
 
@@ -177,27 +238,31 @@ void superadmin::Menu() {
 		cout << "菜单：" << endl;
 		cout << "1.注册学生账号" << endl;
 		cout << "2.柜台还书" << endl;
-		cout << "3.图书检索" << endl;
+		cout << "3.列出所有图书" << endl;
 		cout << "4.注册管理员账号" << endl;
-		cout << "5.列出学生账号列表" << endl;
-		cout << "6.列出管理员账号与密码" << endl;
-		cout << "7.删除学生账号" << endl;
-		cout << "8.删除管理员账号" << endl;
+		cout << "5.添加新书籍" << endl;
+		cout << "6.列出学生账号列表" << endl;
+		cout << "7.列出管理员账号与密码" << endl;
+		cout << "8.删除学生账号" << endl;
+		cout << "9.删除管理员账号" << endl;
 		cout << "0.退出" << endl;
 		cout << "请输入选择序号：";
 		int choose;
 		cin >> choose;
 		switch (choose) {
-		case(1):StudentSignUp(); break;
+		case(1):StudentSignUp(); library::WriteFile(); break;
 		case(2):; break;
-		case(3):; break;
-		case(4):AdminSignUp(); break;
-		case(5):ListStudents(); break;
-		case(6):ListAdmins(); break;
-		case(7):DeleteStudent(); break;
-		case(8):DeleteAdmin(); break;
+		case(3):ListBook(); break;
+		case(4):AdminSignUp(); library::WriteFile(); break;
+		case(5):BookSignUp(); library::WriteFile(); break;
+		case(6):ListStudents(); break;
+		case(7):ListAdmins(); break;
+		case(8):DeleteStudent(); library::WriteFile(); break;
+		case(9):DeleteAdmin(); library::WriteFile(); break;
 		case(0):goto exit; break;
 		default:
+			cout << "输入错误！请重试。" << endl;
+			Sleep(3000);
 			break;
 		}
 	}
@@ -257,7 +322,7 @@ void superadmin::ListAdmins() {
 		SetConsoleTextAttribute(hOut,
 			BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);//文字色_黑色，背景白色
 		for (auto i : library::adminlist) {
-			cout << setw(5) << num++ << setw(20) << setw(20) << i.GetName() << setw(20) << i.GetUsername() << setw(20) << i.GetPassword() << endl;
+			cout << setw(5) << num++ << setw(20) << i.GetName() << setw(20) << i.GetUsername() << setw(20) << i.GetPassword() << endl;
 		}
 	}
 	else {
@@ -283,7 +348,7 @@ void superadmin::DeleteAdmin() {
 	cin >> getusername;
 	int i = 0;
 	if (!library::adminlist.empty()) {
-		for (auto users : library::adminlist) {
+		for (auto &users : library::adminlist) {
 			if (getusername == users.GetUsername()) {
 				library::adminlist.erase(library::adminlist.begin() + i);
 			}

@@ -7,8 +7,10 @@ class admin:public user {
 protected:
 	void Menu();
 	void StudentSignUp();
+	void BookSignUp();
 	void ListStudents();
 	void DeleteStudent();
+	void ReturnBook();
 public:
 	admin() {};
 	admin(string inputname, string inputusername, string inputpassword) :user(inputname, inputusername,inputpassword) {}

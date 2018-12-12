@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include<vector>
 #include<string>
-#include<fstream>
 #include"admin.h"
 #include"book.h"
 #include"student.h"
@@ -16,13 +15,17 @@ private:
 	void AdminLogin();
 	void StudentLogin();
 	void Menu();
-	void WriteFile();
 	void LoadFile();
 public:
 	friend class superadmin;
 	friend class student;
 	friend class admin;
+	friend class book;
+	friend class user;
 	library();
+	static void WriteFile();
 	static void AdminSignUp(string newname, string newusername, string newpassword);
-	static void StudentSignUp(string newusername, string newpassword,string name,string se);
+	static void StudentSignUp(string newusername, string newpassword, string name);
+	static void BookSignUp(string newisbn, string newname, string newlocation,int newquantity);
+	
 };

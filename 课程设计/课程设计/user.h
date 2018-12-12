@@ -8,6 +8,8 @@ protected:
 	string password;
 	string name;
 	virtual void Menu() = 0;
+	void ListBook();
+	void ChangePassword();
 public:
 	user() {}
 	user(string inputname, string inputusername, string inputpassword) :name(inputname), username(inputusername), password(inputpassword) {}

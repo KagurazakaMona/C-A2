@@ -1,6 +1,7 @@
 ﻿#include "library.h"
 vector<admin> library::adminlist;
 vector<student> library::studentlist;
+vector<book> library::booklist;
 
 /*/////////////////////////////////////////////////////////////////////////////
 
