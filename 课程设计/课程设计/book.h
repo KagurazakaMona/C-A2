@@ -16,6 +16,8 @@ public:
 	book() {}
 	book(string newisbn, string newname, string newlocation, int newquantity) : 
 		isbn(newisbn), name(newname), location(newlocation), nowquantity(newquantity), totalquantity(newquantity) {};
+	book(string newisbn, string newname, string newlocation, int newnowquantity,int newtotalquantity) :
+		isbn(newisbn), name(newname), location(newlocation), nowquantity(newnowquantity), totalquantity(newtotalquantity) {};
 	string GetIsbn();
 	string GetName();
 	string GetLocation();

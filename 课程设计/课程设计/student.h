@@ -11,7 +11,6 @@ private:
 	int borrownumber;
 	vector<string> borrowbooksisbn;
 	void Menu();
-	void SignUp();
 	void BorrowBook();
 	void ReturnBook();
 	void ShowMyInformation();

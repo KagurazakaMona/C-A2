@@ -8,14 +8,15 @@ using namespace std;
 
 void student::Menu() {
 	while (1) {
+		system("CLS");
 		HANDLE hOut;
 		hOut = GetStdHandle(STD_OUTPUT_HANDLE);//  获取输出流的句柄
 		SetConsoleTextAttribute(hOut,
 			FOREGROUND_RED |        // 文字色_红色
 			BACKGROUND_BLUE | BACKGROUND_GREEN/* | BACKGROUND_RED*/);      // 背景色_蓝绿色
-		cout << "**********   图书馆管理系统   **********" << endl;
-		cout << "***             学生面板             ***" << endl;
-		cout << "                                        " << endl;
+		cout << "          *************   图书馆管理系统   *************          " << endl;
+		cout << "          *******            学生菜单            *******          " << endl;
+		cout << "                                                   www.moeneko.top" << endl;
 		SetConsoleTextAttribute(hOut,
 			BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);//文字色_黑色，背景白色
 		cout << "菜单：" << endl;
@@ -31,8 +32,8 @@ void student::Menu() {
 		switch (choose) {
 		case(1):BorrowBook(); library::WriteFile();  break;
 		case(2):ReturnBook(); library::WriteFile(); break;
-		case(3):ListBook(); break;
-		case(4):ShowMyInformation(); break;
+		case(3):ListBook(); system("pause"); break;
+		case(4):ShowMyInformation(); system("pause"); break;
 		case(5):ChangePassword(); library::WriteFile(); break;
 		case(0):goto exit; break;
 		default:
@@ -44,39 +45,24 @@ void student::Menu() {
 exit:;
 }
 
-void student::SignUp() {
-	string temp1, temp2;
-	cout << "请输入新注册的学生用户名：";
-	cin >> username;
-	cout << "请输入新注册的学生密码：";
-	cin >> temp1;
-	cout << "请再次输入新注册的学生密码：";
-	cin >> temp2;
-	if (temp1 == temp2) {
-		password = temp2;
-	}
-}
-
 void student::BorrowBook() {
 	string isbn;
 	cout << "请输入待借书的ISBN：";
 	cin >> isbn;
-	book *thisbook;
 	bool havebook = 0;
-	for (auto i : library::booklist) {
+	for (auto &i : library::booklist) {
 		if (isbn == i.isbn) {
-			thisbook = &i;
 			havebook = 1;
 			cout << "成功查询到该书！" << endl;
 			cout << "你要借阅的书目信息如下：" << endl;
-			thisbook->ListInformation();
-			if (borrownumber<=3) {
+			i.ListInformation();
+			if (borrownumber < 3 && i.GetNowquantity() > 0) {
 				cout << "系统正在登记，请稍后......" << endl;
-				thisbook->nowquantity--;
+				i.nowquantity--;
 				borrownumber++;
 				for (auto &j : borrowbooksisbn) {
 					if (j == "EMPTY") {
-						j = thisbook->GetIsbn();
+						j = i.GetIsbn();
 						break;
 					}
 				}
@@ -84,7 +70,7 @@ void student::BorrowBook() {
 				Sleep(3000);
 			}
 			else {
-				cout << "你已超过借书上限，请先归还已借书本后重试！" << endl;
+				cout << "你已超过借书上限或该书已借完，请检查后重试！" << endl;
 				Sleep(3000);
 			}
 			break;
@@ -97,8 +83,9 @@ void student::BorrowBook() {
 }
 
 void student::ReturnBook() {
-	cout << name << "学生，你账号目前的信息如下：" << endl;
+	cout << name << "  同学，你账号目前的信息如下：" << endl;
 	ShowMyInformation();
+	bool isreturnbook = 0;
 	if (borrownumber) {
 		cout << "请输入你要还书的ISBN：";
 		string returnisbn;
@@ -108,20 +95,24 @@ void student::ReturnBook() {
 				for (auto &j : library::booklist) {
 					if (j.GetIsbn() == returnisbn) {
 						j.nowquantity++;
+						break;
 					}
 				}
 				i = "EMPTY";
 				borrownumber--;
+				isreturnbook = 1;
 				cout << "还书成功！3秒后返回主菜单......" << endl;
 				Sleep(3000);
-			}
-			else {
-				cout << "你尚未借阅改书，请检查。" << endl;
+				break;
 			}
 		}
 	}
 	else {
 		cout << "你的账号无借书记录，请加强阅读哦喵~~~" << endl;
+		isreturnbook++;
+	}
+	if (!isreturnbook) {
+		cout << "你尚未借阅该书，请检查。" << endl;
 	}
 }
 

@@ -51,9 +51,9 @@ void library::Menu() {
 		SetConsoleTextAttribute(hOut,
 			FOREGROUND_RED |        // 文字色_红色
 			BACKGROUND_BLUE | BACKGROUND_GREEN/* | BACKGROUND_RED*/);      // 背景色_蓝绿色
-		cout << "                                        " << endl;
-		cout << "**********   图书馆管理系统   **********" << endl;
-		cout << "                                        " << endl;
+		cout << "172054213宋海禹                                                   " << endl;
+		cout << "          *************   图书馆管理系统   *************          " << endl;
+		cout << "                                                   www.moeneko.top" << endl;
 		SetConsoleTextAttribute(hOut,
 			BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);//文字色_黑色，背景白色
 		cout << "菜单：" << endl;
@@ -101,11 +101,6 @@ void library::WriteFile() {
 		outfile << i.GetName() << ',' << i.GetUsername() << ',' << i.GetPassword() << ',' << i.GetBorroenumber() << ',';
 		for (auto j : i.GetBorrowbooksisbn()) {
 			outfile << j << ',';
-			//if (i.GetBorrowbooksisbn().empty()) {
-			//	outfile << ",empty";
-			//}
-			//else {
-			//}
 		}
 		outfile << endl;
 	}
@@ -124,6 +119,7 @@ void library::WriteFile() {
 *//////////////////////////////////////////////////////////////////////////////
 void library::LoadFile() {
 	ifstream infile;
+	const int sleeptime = 100;
 	infile.open("MonaLibrary.csv", ios::in);
 	if (infile) {
 		vector<string> temp;
@@ -132,13 +128,20 @@ void library::LoadFile() {
 			infile.getline(line, 256, ',');
 			temp.push_back(line);
 		} while (temp[temp.size() - 1] != "\nDATAEND");
-		for (int i = 0; i < temp.size(); i++) {
+		auto tempsize = temp.size();
+		for (int i = 0; i < tempsize; i++) {
 			if (temp[i] == "\nbo") {
-				booklist.push_back(book(temp[i + 1], temp[i + 2], temp[i + 3], stoi(temp[i + 4])));
-				i += 4;
+				booklist.push_back(book(temp[i + 1], temp[i + 2], temp[i + 3], stoi(temp[i + 4]), stoi(temp[i + 5])));
+				cout << temp[i] << "正在读取数据" << temp[i + 1] << temp[i + 2] << temp[i + 3] << temp[i + 4] << temp[i + 5] 
+					<< "，已完成 " << 100.0 * i / tempsize << "% 请稍后......";
+				Sleep(sleeptime);
+				i += 5;
 			}
 			else if (temp[i] == "\nad") {
 				adminlist.push_back(admin(temp[i + 1], temp[i + 2], temp[i + 3]));
+				cout << temp[i] << "正在读取数据" << temp[i + 1] << temp[i + 2] << temp[i + 3]
+					<< "，已完成 " << 100.0 * i / tempsize << "% 请稍后......";
+				Sleep(sleeptime);
 				i += 3;
 			}
 			else if (temp[i] == "\nst") {
@@ -146,10 +149,14 @@ void library::LoadFile() {
 				for (int j = 5; j <= 7; j++) {
 					borrowisbn[j - 5] = temp[i + j];
 				}
-				studentlist.push_back(student(temp[i + 1], temp[i + 2], temp[i + 3], borrowisbn, stoi(temp[i + 4])));
+				studentlist.push_back(student(temp[i + 2], temp[i + 3], temp[i + 1], borrowisbn, stoi(temp[i + 4])));
+				cout << temp[i] << "正在读取数据" << temp[i + 1] << temp[i + 2] << temp[i + 3] << temp[i + 4] << temp[i + 5] << temp[i + 6] << temp[i + 7]
+					<< "，已完成 " << 100.0 * i / tempsize << "% 请稍后......";
+				Sleep(sleeptime);
 				i += 7;
 			}
 		}
+		infile.close();
 	}
 	else {
 		cout << "打开文件失败！" << endl;

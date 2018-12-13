@@ -42,14 +42,14 @@ void user::ListBook() {
 	int num = 1;
 	if (!library::booklist.empty()) {
 		cout << "本图书馆图书信息如下：" << endl;
-		cout << setw(5) << "序号" << setw(20) << "书名" << setw(20) << "ISBN" << setw(20) << "位置" << setw(15) << "总数" << setw(15) << "在馆数" << endl;
+		cout << setw(5) << "序号" << setw(30) << "书名" << setw(20) << "ISBN" << setw(20) << "位置" << setw(15) << "总数" << setw(15) << "在馆数" << endl;
 		SetConsoleTextAttribute(hOut,
 			BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);//文字色_黑色，背景白色
 		for (auto i : library::booklist) {
-			cout << setw(5) << num++ << setw(20) << i.GetName() << setw(20) << i.GetIsbn() << setw(20) << i.GetLocation() << setw(15) << i.GetTotalquantity()
-				<< i.GetNowquantity() << endl;
+			cout << setw(5) << num++ << setw(30) << i.GetName() << setw(20) << i.GetIsbn() << setw(20) << i.GetLocation() << setw(15) << i.GetTotalquantity()
+				<< setw(15) << i.GetNowquantity() << endl;
 		}
-		cout << "请输入要检索的书（书名）：";
+		cout << "请输入要检索的书（书名）（搜索任意字符跳过）：";
 		string search;
 		cin >> search;
 		bool havebook = 0;
@@ -61,7 +61,7 @@ void user::ListBook() {
 			}
 		}
 		if (!havebook) {
-			cout << "信息未查询到！" << endl;
+			cout << "用户跳过搜索或信息未查询到！" << endl;
 		}
 	}
 	else {
@@ -69,7 +69,6 @@ void user::ListBook() {
 		SetConsoleTextAttribute(hOut,
 			BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);//文字色_黑色，背景白色
 	}
-	system("pause");
 }
 
 void user::ChangePassword() {

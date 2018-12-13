@@ -11,6 +11,7 @@ protected:
 	void ListStudents();
 	void DeleteStudent();
 	void ReturnBook();
+	void DeleteBook();
 public:
 	admin() {};
 	admin(string inputname, string inputusername, string inputpassword) :user(inputname, inputusername,inputpassword) {}

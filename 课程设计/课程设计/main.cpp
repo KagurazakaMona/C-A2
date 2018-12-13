@@ -13,6 +13,7 @@ vector<book> library::booklist;
 
 *//////////////////////////////////////////////////////////////////////////////
 int main() {
+	system("mode con cols=120 lines=260");//改变宽高
 	new library;
 	return 0;
 }
