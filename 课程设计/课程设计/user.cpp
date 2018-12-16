@@ -72,29 +72,26 @@ void user::ListBook() {
 }
 
 void user::ChangePassword() {
-	while (1) {
-		getchar();
-		string temp1, temp2;
-		cout << "请确认要修改密码的用户名是：" << username << endl;
-		cout << "确认请输入Y（区分大小写），按任意键退出。" << endl;
-		if (getchar() == 'Y') {
-			cout << "请输入新密码：";
-			cin >> temp1;
-			cout << "请再次输入新密码：";
-			cin >> temp2;
-			if (temp1 == temp2) {
-				password = temp2;
-				cout << "密码修改成功！（三秒后返回菜单）" << endl;
-				Sleep(3000);
-				break;
-			}
-			else {
-				cout << "两次输入的密码不同，请重试！" << endl;
-			}
+	getchar();//消除上次输入的'\n'
+	string temp1, temp2;
+	cout << "请确认要修改密码的用户名是：" << username << endl;
+	cout << "确认请输入Y（区分大小写），按任意键退出。" << endl;
+	if (getchar() == 'Y') {
+		cout << "请输入新密码：";
+		cin >> temp1;
+		cout << "请再次输入新密码：";
+		cin >> temp2;
+		if (temp1 == temp2) {
+			password = temp2;
+			cout << "密码修改成功！（三秒后返回菜单）" << endl;
+			Sleep(3000);
 		}
 		else {
-			cout << "取消修改密码！" << endl;
-			break;
+			cout << "两次输入的密码不同，请重试！" << endl;
 		}
 	}
+	else {
+		cout << "取消修改密码！" << endl;
+	}
+	Sleep(3000);
 }

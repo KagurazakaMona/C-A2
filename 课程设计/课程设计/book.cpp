@@ -9,23 +9,25 @@ using namespace std;
 string book::GetIsbn() {
 	return isbn;
 }
-
 string book::GetName() {
 	return name;
 }
-
 string book::GetLocation() {
 	return location;
 }
-
 int book::GetNowquantity() {
 	return nowquantity;
 }
-
 int book::GetTotalquantity() {
 	return totalquantity;
 }
 
+/*/////////////////////////////////////////////////////////////////////////////
+
+.			函数	名称：book::ListInformation()
+.					作用：输出书籍信息。
+
+*//////////////////////////////////////////////////////////////////////////////
 void book::ListInformation() {
 	HANDLE hOut;
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);//  获取输出流的句柄

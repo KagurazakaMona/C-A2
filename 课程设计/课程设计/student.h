@@ -21,6 +21,6 @@ public:
 	student(string inputusername, string inputpassword, string na);
 	student(string inputusername, string inputpassword, string na, string bisbn[3], int bnumber);
 	void ShowInformation();
-	int GetBorroenumber();
+	int GetBorrownumber();
 	vector<string> GetBorrowbooksisbn();
 };

@@ -24,8 +24,8 @@ public:
 	friend class user;
 	library();
 	static void WriteFile();
-	static void AdminSignUp(string newname, string newusername, string newpassword);
-	static void StudentSignUp(string newusername, string newpassword, string name);
-	static void BookSignUp(string newisbn, string newname, string newlocation,int newquantity);
+	//static void AdminSignUp(string newname, string newusername, string newpassword);
+	//static void StudentSignUp(string newusername, string newpassword, string name);
+	//static void BookSignUp(string newisbn, string newname, string newlocation,int newquantity);
 	
 };

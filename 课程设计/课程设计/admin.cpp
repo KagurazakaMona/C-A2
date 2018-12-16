@@ -12,9 +12,6 @@ using namespace std;
 
 .			函数	名称：admin::Menu()
 .					作用：管理员主菜单。
-.					输入值：None
-.					类型：void
-.					返回值：None
 
 *//////////////////////////////////////////////////////////////////////////////
 void admin::Menu() {
@@ -38,18 +35,22 @@ void admin::Menu() {
 		cout << "5.删除学生账号" << endl;
 		cout << "6.添加新书籍" << endl;
 		cout << "7.删除书籍" << endl;
+		cout << "8.修改学生信息" << endl;
+		cout << "9.修改本账户密码" << endl;
 		cout << "0.退出" << endl;
 		cout << "请输入选择序号：";
 		int choose;
 		cin >> choose;
 		switch (choose) {
-		case(1):StudentSignUp(); library::WriteFile(); break;
+		case(1):StudentSignUp(); library::WriteFile(); break;//所有涉及数据修改的，均需使用library::WriteFile()函数，下同。
 		case(2):ReturnBook(); library::WriteFile(); break;
 		case(3):ListBook(); system("pause"); break;
 		case(4):ListStudents(); system("pause"); break;
 		case(5):DeleteStudent(); library::WriteFile(); break;
 		case(6):BookSignUp(); library::WriteFile(); break;
 		case(7):DeleteBook(); library::WriteFile(); break;
+		case(8):ModifyStudent(); library::WriteFile(); break;
+		case(9):ChangePassword(); library::WriteFile(); break;
 		case(0):goto exit; break;
 		default:
 			break;
@@ -62,9 +63,6 @@ exit:;
 
 .			函数	名称：admin::StudentSignUp()
 .					作用：注册学生账号输入信息界面。
-.					输入值：None
-.					类型：void
-.					返回值：None
 
 *//////////////////////////////////////////////////////////////////////////////
 void admin::StudentSignUp() {
@@ -72,14 +70,10 @@ void admin::StudentSignUp() {
 	string temp1, temp2;
 	string number;
 	string name;
-	cout << "请输入新注册的学生姓名：";
-	cin >> name;
-	cout << "请输入新注册的学生学号：";
-	cin >> number;
-	cout << "请输入新注册学生的密码：";
-	cin >> temp1;
-	cout << "请再次输入新注册学生的密码：";
-	cin >> temp2;
+	cout << "请输入新注册的学生姓名：";cin >> name;
+	cout << "请输入新注册的学生学号：";cin >> number;
+	cout << "请输入新注册学生的密码：";cin >> temp1;
+	cout << "请再次输入新注册学生的密码：";cin >> temp2;
 	bool isrepeat = 0;
 	for (auto i : library::studentlist) {
 		if (i.GetUsername() == number) {
@@ -89,7 +83,7 @@ void admin::StudentSignUp() {
 	}
 	if (!isrepeat) {
 		if (temp1 == temp2) {
-			library::StudentSignUp(number, temp2, name);
+			library::studentlist.push_back(student(number, temp2, name));
 			cout << "注册成功！三秒后返回菜单" << endl;
 		}
 		else {
@@ -102,19 +96,21 @@ void admin::StudentSignUp() {
 	Sleep(3000);
 }
 
+/*/////////////////////////////////////////////////////////////////////////////
+
+.			函数	名称：admin::BookSignUp()
+.					作用：新书录入。
+
+*//////////////////////////////////////////////////////////////////////////////
 void admin::BookSignUp() {
 	string location;
 	int quantity;
 	string isbn;
 	string name;
-	cout << "请输入新书名：";
-	cin >> name;
-	cout << "请输入新书ISBN：";
-	cin >> isbn;
-	cout << "请输入新书位置：";
-	cin >> location;
-	cout << "请输入新书数量：";
-	cin >> quantity;
+	cout << "请输入新书名：";cin >> name;
+	cout << "请输入新书ISBN：";cin >> isbn;
+	cout << "请输入新书位置：";cin >> location;
+	cout << "请输入新书数量：";cin >> quantity;
 	bool isrepeat = 0;
 	for (auto i : library::booklist) {
 		if (i.GetIsbn() == isbn) {
@@ -123,7 +119,7 @@ void admin::BookSignUp() {
 		}
 	}
 	if (!isrepeat) {
-		library::BookSignUp(isbn, name, location, quantity);
+		library::booklist.push_back(book(isbn, name, location, quantity));
 		cout << "录入完成！3秒后返回菜单。" << endl;
 	}
 	else {
@@ -136,9 +132,6 @@ void admin::BookSignUp() {
 
 .			函数	名称：admin::ListStudent()
 .					作用：输出学生信息。
-.					输入值：None
-.					类型：void
-.					返回值：None
 
 *//////////////////////////////////////////////////////////////////////////////
 void admin::ListStudents() {
@@ -169,19 +162,16 @@ void admin::ListStudents() {
 
 .			函数	名称：admin::DeleteStudent()
 .					作用：删除学生信息。
-.					输入值：None
-.					类型：void
-.					返回值：None
 
 *//////////////////////////////////////////////////////////////////////////////
 void admin::DeleteStudent() {
 	string getusername;
 	ListStudents();
-	cout << "请输入要删除的用户名：";
-	cin >> getusername;
 	int i = 0;
 	bool havestudent = 0;
 	if (!library::studentlist.empty()) {
+		cout << "请输入要删除的用户名：";
+		cin >> getusername;
 		for (auto &users : library::studentlist) {
 			if (getusername == users.GetUsername()) {
 				library::studentlist.erase(library::studentlist.begin() + i);
@@ -202,6 +192,12 @@ void admin::DeleteStudent() {
 	Sleep(3000);
 }
 
+/*/////////////////////////////////////////////////////////////////////////////
+
+.			函数	名称：admin::ReturnBook()
+.					作用：柜台还书。
+
+*//////////////////////////////////////////////////////////////////////////////
 void admin::ReturnBook() {
 	string studentnum;
 	cout << "请输入学生学号：";
@@ -245,14 +241,20 @@ void admin::ReturnBook() {
 	Sleep(3000);
 }
 
+/*/////////////////////////////////////////////////////////////////////////////
+
+.			函数	名称：admin::DeleteBook()
+.					作用：删除书籍信息。
+
+*//////////////////////////////////////////////////////////////////////////////
 void admin::DeleteBook() {
 	string getisbn;
 	ListBook();
-	cout << "请输入要删除书籍的ISBN：";
-	cin >> getisbn;
 	int i = 0;
 	bool isdelete = 0;
 	if (!library::booklist.empty()) {
+		cout << "请输入要删除书籍的ISBN：";
+		cin >> getisbn;
 		for (auto &books : library::booklist) {
 			if (getisbn == books.GetIsbn()) {
 				library::booklist.erase(library::booklist.begin() + i);
@@ -273,6 +275,39 @@ void admin::DeleteBook() {
 	Sleep(3000);
 }
 
+/*/////////////////////////////////////////////////////////////////////////////
+
+.			函数	名称：admin::ModifyStudent()
+.					作用：修改学生信息。
+
+*//////////////////////////////////////////////////////////////////////////////
+void admin::ModifyStudent() {
+	cout << "请输入要修改的学生学号：";
+	string studentnum;
+	cin >> studentnum;
+	bool havestudent = 0;
+	if (!library::studentlist.empty()) {
+		for (auto &i : library::studentlist) {
+			if (i.GetUsername() == studentnum) {
+				havestudent++;
+				cout << "请输入修改后的名字：";cin >> i.name;
+				cout << "请输入修改后的密码：";cin >> i.password;
+				cout << "修改成功！" << endl;
+				break;
+			}
+		}
+	}
+	else {
+		havestudent++;
+		cout << "学生列表为空！请检查。" << endl;
+	}
+	if (!havestudent) {
+		cout << "查无此人，请检查！" << endl;
+	}
+	Sleep(3000);
+}
+
+//这里藏了一个超级用户的用户名与密码。
 superadmin::superadmin() {
 	username = "root";
 	password = "470026648";
@@ -283,9 +318,6 @@ superadmin::superadmin() {
 
 .			函数	名称：superadmin::Menu()
 .					作用：超级管理员菜单。
-.					输入值：None
-.					类型：void
-.					返回值：None
 
 *//////////////////////////////////////////////////////////////////////////////
 void superadmin::Menu() {
@@ -312,12 +344,13 @@ void superadmin::Menu() {
 		cout << "8.删除学生账号" << endl;
 		cout << "9.删除管理员账号" << endl;
 		cout << "10.删除图书" << endl;
+		cout << "11.修改学生信息" << endl;
 		cout << "0.退出" << endl;
 		cout << "请输入选择序号：";
 		int choose;
 		cin >> choose;
 		switch (choose) {
-		case(1):StudentSignUp(); library::WriteFile(); break;
+		case(1):StudentSignUp(); library::WriteFile(); break;//所有涉及数据修改的，均需使用library::WriteFile()函数，下同。
 		case(2):ReturnBook(); library::WriteFile(); break;
 		case(3):ListBook();	system("pause"); break;
 		case(4):AdminSignUp(); library::WriteFile(); break;
@@ -327,6 +360,7 @@ void superadmin::Menu() {
 		case(8):DeleteStudent(); library::WriteFile(); break;
 		case(9):DeleteAdmin(); library::WriteFile(); break;
 		case(10):DeleteBook(); library::WriteFile(); break;
+		case(11):ModifyStudent(); library::WriteFile(); break;
 		case(0):goto exit; break;
 		default:
 			cout << "输入错误！请重试。" << endl;
@@ -341,22 +375,15 @@ exit:;
 
 .			函数	名称：superadmin::AdminSignUp()
 .					作用：注册新的管理员账户。
-.					输入值：None
-.					类型：void
-.					返回值：None
 
 *//////////////////////////////////////////////////////////////////////////////
 void superadmin::AdminSignUp() {
 	string temp1, temp2;
 	string tempusername;
-	cout << "请输入新注册的管理员真实姓名：";
-	cin >> name;
-	cout << "请输入新注册的管理员用户名：";
-	cin >> tempusername;
-	cout << "请输入新注册的管理员密码：";
-	cin >> temp1;
-	cout << "请再次输入新注册的管理员密码：";
-	cin >> temp2;
+	cout << "请输入新注册的管理员真实姓名：";cin >> name;
+	cout << "请输入新注册的管理员用户名：";cin >> tempusername;
+	cout << "请输入新注册的管理员密码：";cin >> temp1;
+	cout << "请再次输入新注册的管理员密码：";cin >> temp2;
 	bool isrepeat = 0;
 	for (auto i : library::adminlist) {
 		if (i.GetUsername() == tempusername) {
@@ -366,7 +393,7 @@ void superadmin::AdminSignUp() {
 	}
 	if (!isrepeat) {
 		if (temp1 == temp2) {
-			library::AdminSignUp(name, tempusername, temp2);
+			library::adminlist.push_back(admin(name, tempusername, temp2));
 			cout << "注册成功！三秒后返回菜单" << endl;
 		}
 		else {
@@ -383,9 +410,6 @@ void superadmin::AdminSignUp() {
 
 .			函数	名称：superadmin::ListAdmin()
 .					作用：列出所有管理员账户的用户名与密码。
-.					输入值：None
-.					类型：void
-.					返回值：None
 
 *//////////////////////////////////////////////////////////////////////////////
 void superadmin::ListAdmins() {
@@ -415,19 +439,16 @@ void superadmin::ListAdmins() {
 
 .			函数	名称：superadmin::DeleteAdmin()
 .					作用：删除管理员账户。
-.					输入值：None
-.					类型：void
-.					返回值：None
 
 *//////////////////////////////////////////////////////////////////////////////
 void superadmin::DeleteAdmin() {
 	string getusername;
 	ListAdmins();
-	cout << "请输入要删除的用户名：";
-	cin >> getusername;
 	int i = 0;
 	bool isdelete = 0;
 	if (!library::adminlist.empty()) {
+		cout << "请输入要删除的用户名：";
+		cin >> getusername;
 		for (auto &users : library::adminlist) {
 			if (getusername == users.GetUsername()) {
 				library::adminlist.erase(library::adminlist.begin() + i);

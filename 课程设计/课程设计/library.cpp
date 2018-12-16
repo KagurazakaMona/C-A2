@@ -11,9 +11,6 @@ using namespace std;
 
 .			函数	名称：library::library()
 .					作用：图书馆程序入口。
-.					输入值：None
-.					类型：None
-.					返回值：None
 
 *//////////////////////////////////////////////////////////////////////////////
 library::library() {
@@ -22,24 +19,8 @@ library::library() {
 
 /*/////////////////////////////////////////////////////////////////////////////
 
-.			函数	名称：library::AdminSignUp()
-.					作用：管理员账户注册。
-.					输入值：新用户名，新密码
-.					类型：void
-.					返回值：None
-
-*//////////////////////////////////////////////////////////////////////////////
-void library::AdminSignUp(string newname, string newusername, string newpassword) {
-	adminlist.push_back(admin(newname, newusername, newpassword));
-}
-
-/*/////////////////////////////////////////////////////////////////////////////
-
 .			函数	名称：library::Menu()
 .					作用：图书馆程序登录菜单。
-.					输入值：None
-.					类型：void
-.					返回值：None
 
 *//////////////////////////////////////////////////////////////////////////////
 void library::Menu() {
@@ -76,9 +57,6 @@ void library::Menu() {
 
 .			函数	名称：library::WriteFile()
 .					作用：写入文件。
-.					输入值：None
-.					类型：void
-.					返回值：None
 
 *//////////////////////////////////////////////////////////////////////////////
 void library::WriteFile() {
@@ -98,7 +76,7 @@ void library::WriteFile() {
 	outfile << "类型,名字,用户名,密码,借书数量,所借书籍," << endl;
 	for (auto i : studentlist) {
 		outfile << "st,";
-		outfile << i.GetName() << ',' << i.GetUsername() << ',' << i.GetPassword() << ',' << i.GetBorroenumber() << ',';
+		outfile << i.GetName() << ',' << i.GetUsername() << ',' << i.GetPassword() << ',' << i.GetBorrownumber() << ',';
 		for (auto j : i.GetBorrowbooksisbn()) {
 			outfile << j << ',';
 		}
@@ -112,14 +90,11 @@ void library::WriteFile() {
 
 .			函数	名称：library::LoadFile()
 .					作用：读取文件。
-.					输入值：None
-.					类型：void
-.					返回值：None
 
 *//////////////////////////////////////////////////////////////////////////////
 void library::LoadFile() {
 	ifstream infile;
-	const int sleeptime = 100;
+	const int sleeptime = 30;
 	infile.open("MonaLibrary.csv", ios::in);
 	if (infile) {
 		vector<string> temp;
@@ -133,14 +108,14 @@ void library::LoadFile() {
 			if (temp[i] == "\nbo") {
 				booklist.push_back(book(temp[i + 1], temp[i + 2], temp[i + 3], stoi(temp[i + 4]), stoi(temp[i + 5])));
 				cout << temp[i] << "正在读取数据" << temp[i + 1] << temp[i + 2] << temp[i + 3] << temp[i + 4] << temp[i + 5] 
-					<< "，已完成 " << 100.0 * i / tempsize << "% 请稍后......";
+					<< "，          已完成 " << 100.0 * i / tempsize << "% 请稍后......";
 				Sleep(sleeptime);
 				i += 5;
 			}
 			else if (temp[i] == "\nad") {
 				adminlist.push_back(admin(temp[i + 1], temp[i + 2], temp[i + 3]));
 				cout << temp[i] << "正在读取数据" << temp[i + 1] << temp[i + 2] << temp[i + 3]
-					<< "，已完成 " << 100.0 * i / tempsize << "% 请稍后......";
+					<< "，          已完成 " << 100.0 * i / tempsize << "% 请稍后......";
 				Sleep(sleeptime);
 				i += 3;
 			}
@@ -151,7 +126,7 @@ void library::LoadFile() {
 				}
 				studentlist.push_back(student(temp[i + 2], temp[i + 3], temp[i + 1], borrowisbn, stoi(temp[i + 4])));
 				cout << temp[i] << "正在读取数据" << temp[i + 1] << temp[i + 2] << temp[i + 3] << temp[i + 4] << temp[i + 5] << temp[i + 6] << temp[i + 7]
-					<< "，已完成 " << 100.0 * i / tempsize << "% 请稍后......";
+					<< "，          已完成 " << 100.0 * i / tempsize << "% 请稍后......";
 				Sleep(sleeptime);
 				i += 7;
 			}
@@ -164,31 +139,29 @@ void library::LoadFile() {
 		Sleep(1000);
 	}
 }
+//
+///*/////////////////////////////////////////////////////////////////////////////
+//
+//.			函数	名称：library::AdminSignUp()
+//.					作用：学生、管理员、书籍注册登记。
+//
+//*//////////////////////////////////////////////////////////////////////////////
+//void library::StudentSignUp(string newusername, string newpassword, string name) {
+//	studentlist.push_back(student(newusername, newpassword, name));
+//}
 
-/*/////////////////////////////////////////////////////////////////////////////
+//void library::AdminSignUp(string newname, string newusername, string newpassword) {
+//	adminlist.push_back(admin(newname, newusername, newpassword));
+//}
 
-.			函数	名称：library::AdminSignUp()
-.					作用：学生账户注册。
-.					输入值：新用户名，新密码，名字，性别
-.					类型：void
-.					返回值：None
-
-*//////////////////////////////////////////////////////////////////////////////
-void library::StudentSignUp(string newusername, string newpassword, string name) {
-	studentlist.push_back(student(newusername, newpassword, name));
-}
-
-void library::BookSignUp(string newisbn, string newname, string newlocation, int newquantity) {
-	booklist.push_back(book(newisbn, newname, newlocation, newquantity));
-}
+//void library::BookSignUp(string newisbn, string newname, string newlocation, int newquantity) {
+//	booklist.push_back(book(newisbn, newname, newlocation, newquantity));
+//}
 
 /*/////////////////////////////////////////////////////////////////////////////
 
 .			函数	名称：library::AdminLogin()
 .					作用：管理员账户登录。
-.					输入值：None
-.					类型：void
-.					返回值：None
 
 *//////////////////////////////////////////////////////////////////////////////
 void library::AdminLogin(){
@@ -228,9 +201,6 @@ void library::AdminLogin(){
 
 .			函数	名称：library::StudentLogin()
 .					作用：学生账户登录。
-.					输入值：None
-.					类型：void
-.					返回值：None
 
 *//////////////////////////////////////////////////////////////////////////////
 void library::StudentLogin() {

@@ -6,6 +6,12 @@
 #include "student.h"
 using namespace std;
 
+/*/////////////////////////////////////////////////////////////////////////////
+
+.			函数	名称：student::Menu()
+.					作用：学生主菜单。
+
+*//////////////////////////////////////////////////////////////////////////////
 void student::Menu() {
 	while (1) {
 		system("CLS");
@@ -30,7 +36,7 @@ void student::Menu() {
 		int choose;
 		cin >> choose;
 		switch (choose) {
-		case(1):BorrowBook(); library::WriteFile();  break;
+		case(1):BorrowBook(); library::WriteFile();  break;//所有涉及数据修改的，均需使用library::WriteFile()函数，下同。
 		case(2):ReturnBook(); library::WriteFile(); break;
 		case(3):ListBook(); system("pause"); break;
 		case(4):ShowMyInformation(); system("pause"); break;
@@ -45,6 +51,12 @@ void student::Menu() {
 exit:;
 }
 
+/*/////////////////////////////////////////////////////////////////////////////
+
+.			函数	名称：student::BorrowBook()
+.					作用：学生借书。
+
+*//////////////////////////////////////////////////////////////////////////////
 void student::BorrowBook() {
 	string isbn;
 	cout << "请输入待借书的ISBN：";
@@ -82,6 +94,12 @@ void student::BorrowBook() {
 	}
 }
 
+/*/////////////////////////////////////////////////////////////////////////////
+
+.			函数	名称：student::ReturnBook()
+.					作用：学生还书。
+
+*//////////////////////////////////////////////////////////////////////////////
 void student::ReturnBook() {
 	cout << name << "  同学，你账号目前的信息如下：" << endl;
 	ShowMyInformation();
@@ -116,6 +134,12 @@ void student::ReturnBook() {
 	}
 }
 
+/*/////////////////////////////////////////////////////////////////////////////
+
+.			函数	名称：student::ShowInformation()
+.					作用：输出学生信息。
+
+*//////////////////////////////////////////////////////////////////////////////
 void student::ShowMyInformation() {
 	HANDLE hOut;
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);//  获取输出流的句柄
@@ -129,6 +153,14 @@ void student::ShowMyInformation() {
 	ShowInformation();
 }
 
+/*/////////////////////////////////////////////////////////////////////////////
+
+.			函数	名称：student::Student()
+.                         student::student(string inputusername, string inputpassword, string na) :user(na, inputusername, inputpassword)
+.						  student::student(string inputusername, string inputpassword, string na, string bisbn[3], int bnumber)
+.                   作用：学生构造函数。
+
+*//////////////////////////////////////////////////////////////////////////////
 student::student() {
 	borrownumber = 0;
 	vector<book> borrowbooks(10);
@@ -140,15 +172,6 @@ student::student(string inputusername, string inputpassword, string na) :user(na
 	borrowbooksisbn = temp;
 }
 
-
-int student::GetBorroenumber() {
-	return borrownumber;
-}
-
-vector<string>  student::GetBorrowbooksisbn() {
-	return borrowbooksisbn;
-}
-
 student::student(string inputusername, string inputpassword, string na, string bisbn[3], int bnumber) :
 	user(na, inputusername, inputpassword), borrownumber(bnumber) {
 	for (int i = 0; i < 3; i++) {
@@ -158,11 +181,23 @@ student::student(string inputusername, string inputpassword, string na, string b
 
 /*/////////////////////////////////////////////////////////////////////////////
 
+.			函数	名称：student::GetBorrownumber()
+.                         student::GetBorrowbooksisbn()
+.					作用：获取相应的学生信息。
+
+*//////////////////////////////////////////////////////////////////////////////
+int student::GetBorrownumber() {
+	return borrownumber;
+}
+
+vector<string>  student::GetBorrowbooksisbn() {
+	return borrowbooksisbn;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////
+
 .			函数	名称：student::ShowInformation()
 .					作用：输出学生信息。
-.					输入值：None
-.					类型：void 
-.					20 用户名 20 名字 15 借书数 endl
 
 *//////////////////////////////////////////////////////////////////////////////
 void student::ShowInformation() {
