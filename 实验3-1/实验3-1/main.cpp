@@ -2,7 +2,6 @@
 #include"bulk.h"
 using namespace std;
 int main() {
-	//system("chcp 65001");
 	bulk b[5] = {
 		bulk(2.3, 4.5, 6.7) ,
 		bulk(1.5, 3.4),
